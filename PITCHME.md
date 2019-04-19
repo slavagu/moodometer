@@ -28,7 +28,7 @@ npm start
 
 ---
 
-## Add libraries
+## Add Libraries
 
 Reference Bootstrap CSS framework in the `head` tag of `public/index.html`
 
@@ -109,8 +109,48 @@ class App extends Component {
 export default App
 ```
 
-## Check the new UI at http://localhost:3000/
+## Check the new UI
+
+Local build should be running at http://localhost:3000/
 
 ![UI](./pitchme-images/ui-1.png)
 
+## Deploy the website to GitHub pages
+
+Install a package called `gh-pages`
+
+```sh
+npm i -D gh-pages
+```
+
+Add homepage link into `package.json` and modify deploy tasks
+
+```js
+{
+  ...
+  "homepage": "https://username.github.io/my-app",
+  "scripts": {
+    ...
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+}
+```
+
+Add `.env` file to the root of the project
+
+```
+PUBLIC_URL=https://username.github.io/my-app
+```
+
+Deploy the website
+
+```sh
+npm run deploy
+```
+
 ## Add serverless API
+
+```
+
+```
