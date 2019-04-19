@@ -28,50 +28,89 @@ npm start
 
 ---
 
-## Add Bootstrap CSS framework and Font Awesome icons
+## Add libraries
 
-Reference Bootstrap and Font Awesome stylesheets in `public/index.html` head
+Reference Bootstrap CSS framework in the `head` tag of `public/index.html`
 
 ```html
 <link
   rel="stylesheet"
   href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css"
 />
-<link
-  rel="stylesheet"
-  href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-/>
 ```
 
-## Add mood-o-meter buttons
+Install Chart.js charting package
 
-Replace `App` class with the following
+```sh
+npm i react-chartjs-2 chart.js
+```
+
+---
+
+## Build the UI
+
+Replace `src/App.js` with the following
 
 ```js
+import React, { Component } from 'react'
+import './App.css'
+import { Doughnut } from 'react-chartjs-2'
+
+const labels = ['so-so', 'good', 'great']
+const buttons = ['btn-danger', 'btn-warning', 'btn-success']
+const colors = ['#EB3547', '#FFC03E', '#00A553']
+
+const Options = ({ onSelect }) => (
+  <div>
+    {buttons.map((btn, i) => (
+      <button
+        key={labels[i]}
+        className={`btn ${btn} btn-lg m-2`}
+        onClick={() => onSelect(i)}
+      >
+        {labels[i]}
+      </button>
+    ))}
+  </div>
+)
+
+const Report = ({ answers }) => (
+  <Doughnut
+    height={120}
+    options={{ maintainAspectRatio: false, legend: false, rotation: 1.57 }}
+    data={{ labels, datasets: [{ data: answers, backgroundColor: colors }] }}
+  />
+)
+
 class App extends Component {
+  state = {
+    answers: [0, 0, 0],
+  }
+  handleSelect = choice => {
+    const answers = [...this.state.answers]
+    answers[choice]++
+    this.setState({ answers })
+  }
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <p>How do you feel today?</p>
-          <div>
-            <button className="btn btn-danger btn-lg">
-              bad <i className="fa fa-thumbs-down" />
-            </button>
-            <button className="btn btn-warning btn-lg m-3">
-              meh <i className="fa fa-meh-o" />
-            </button>
-            <button className="btn btn-success btn-lg">
-              fine <i className="fa fa-thumbs-up" />
-            </button>
+          <Options onSelect={this.handleSelect} />
+          <div className="fixed-bottom">
+            <Report answers={this.state.answers} />
           </div>
         </header>
       </div>
     )
   }
 }
+
+export default App
 ```
 
 ## Check the new UI at http://localhost:3000/
 
 ![UI](./pitchme-images/ui-1.png)
+
+## Add serverless API
