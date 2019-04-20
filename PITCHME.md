@@ -1,8 +1,8 @@
 # moodometer
 
-This is a demo project showing how to create a serverless app in a few simple steps.
+A simple app to capture team mood and see how it changes over time.
 
-Most samples are taken from this excellent tutorial: https://serverless-stack.com
+> This is a demo project showing how to create a serverless app in a few simple steps, inspired by https://serverless-stack.com
 
 ---
 
@@ -21,16 +21,16 @@ $ npm --version
 Create your new app with [create-react-app](https://github.com/facebook/create-react-app)
 
 ```sh
-npm init react-app my-app
-cd my-app
+npm init react-app moodometer
+cd moodometer
 npm start
 ```
 
 ---
 
-## Add Libraries
+## Add some UI libraries
 
-Reference Bootstrap CSS framework in the `head` tag of `public/index.html`
+Load Bootstrap CSS framework in the `head` tag of `public/index.html`
 
 ```html
 <link
@@ -117,18 +117,18 @@ Local build should be running at http://localhost:3000/
 
 ## Deploy the website to GitHub pages
 
-Install a package called `gh-pages`
+Install `gh-pages` as a dev dependency
 
 ```sh
 npm i -D gh-pages
 ```
 
-Add homepage link into `package.json` and modify deploy tasks
+Set homepage link in `package.json` and add deploy task
 
 ```js
 {
   ...
-  "homepage": "https://username.github.io/my-app",
+  "homepage": "https://slavagu.github.io/moodometer",
   "scripts": {
     ...
     "predeploy": "npm run build",
@@ -139,8 +139,8 @@ Add homepage link into `package.json` and modify deploy tasks
 
 Add `.env` file to the root of the project
 
-```
-PUBLIC_URL=https://username.github.io/my-app
+```ini
+PUBLIC_URL="https://slavagu.github.io/moodometer"
 ```
 
 Deploy the website
@@ -148,6 +148,8 @@ Deploy the website
 ```sh
 npm run deploy
 ```
+
+Production build should be running at https://slavagu.github.io/moodometer/
 
 ## Add serverless API
 
