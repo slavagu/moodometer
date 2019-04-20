@@ -1,0 +1,59 @@
+service: moodometer-api
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: ap-southeast-2
+  timeout: 30
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - 'Fn::GetAtt': [MoodDynamoDbTable, Arn]
+
+plugins:
+  - serverless-offline
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  moodTableName: mood-${self:custom.stage}
+
+functions:
+  postMood:
+    handler: handler.postMood
+    events:
+      - http:
+          path: mood
+          method: post
+          cors: true
+  getMood:
+    handler: handler.getMood
+    events:
+      - http:
+          path: mood
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    MoodDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:custom.moodTableName}
+        AttributeDefinitions:
+          - AttributeName: date
+            AttributeType: S
+        KeySchema:
+          - AttributeName: date
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 10
+          WriteCapacityUnits: 10

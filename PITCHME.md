@@ -149,10 +149,151 @@ Deploy the website
 npm run deploy
 ```
 
-Production build should be running at https://slavagu.github.io/moodometer/
+Online build should be running at https://slavagu.github.io/moodometer/
 
 ## Add serverless API
 
+Create `api` folder
+
+```sh
+mkdir api
+cd api
 ```
 
+Create `package.json`
+
+```js
+{
+  "name": "moodometer-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
 ```
+
+Install serverless framework
+
+```
+npm i -D serverless serverless-offline
+```
+
+Add into `.gitignore`
+
+```
+.serverless
+```
+
+Add into `package.json` scripts section
+
+```js
+{
+  "start": "serverless offline start --port 4000",
+  "deploy": "serverless deploy --verbose",
+  ...
+}
+```
+
+Create `serverless.yml` file to define a new serverless API with DynamoDB table
+
+```yaml
+service: moodometer-api
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: ap-southeast-2
+  timeout: 30
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - 'Fn::GetAtt': [MoodDynamoDbTable, Arn]
+
+plugins:
+  - serverless-offline
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  moodTableName: mood-${self:custom.stage}
+
+functions:
+  postMood:
+    handler: handler.postMood
+    events:
+      - http:
+          path: mood
+          method: post
+          cors: true
+  getMood:
+    handler: handler.getMood
+    events:
+      - http:
+          path: mood
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    MoodDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:custom.moodTableName}
+        AttributeDefinitions:
+          - AttributeName: date
+            AttributeType: S
+        KeySchema:
+          - AttributeName: date
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 10
+          WriteCapacityUnits: 10
+```
+
+Create `handler.js` file to define API endpoints
+
+```js
+module.exports.postMood = (event, context, callback) => {
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: 'Go Serverless v1.0! Your function executed successfully!',
+      input: event,
+    }),
+  }
+
+  callback(null, response)
+}
+
+module.exports.getMood = (event, context, callback) => {
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: 'Go Serverless v1.0! Your function executed successfully!',
+      input: event,
+    }),
+  }
+
+  callback(null, response)
+}
+```
+
+Deploy the API
+
+```sh
+npm run deploy
+```
+
+Online build should be available at https://<randomid>.execute-api.ap-southeast-2.amazonaws.com/dev/mood
