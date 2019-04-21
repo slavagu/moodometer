@@ -6,6 +6,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "aws-sdk": "^2.441.0",
     "serverless": "^1.41.0",
     "serverless-offline": "^4.9.4"
   },

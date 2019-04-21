@@ -304,6 +304,8 @@ Add DynamoDB table into `serverless.yml`
 ```yaml
 provider:
   ...
+  environment:
+    MOOD_TABLE_NAME: ${self:custom.moodTableName}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -336,4 +338,113 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 10
           WriteCapacityUnits: 10
+```
+
+Install aws sdk as a dev dependency because it's available in Lambda environment
+
+```sh
+npm i -D aws-sdk
+```
+
+Create folder `services` and add `mood.js` there
+
+```js
+const AWS = require('aws-sdk')
+
+const dynamoDb = new AWS.DynamoDB.DocumentClient()
+const tableName = process.env.MOOD_TABLE_NAME
+
+module.exports.updateMood = async data => {
+  const { red, yellow, green } = data
+
+  const timestamp = new Date().toISOString()
+  const date = timestamp.substring(0, 10)
+
+  const params = {
+    TableName: tableName,
+    Key: {
+      date,
+    },
+    UpdateExpression: 'ADD red :r, yellow :y, green :g',
+    ExpressionAttributeValues: {
+      ':r': red,
+      ':y': yellow,
+      ':g': green,
+    },
+    ReturnValues: 'ALL_NEW',
+  }
+
+  const result = await dynamoDb.update(params).promise()
+  const item = result.Attributes
+
+  console.log('Mood updated', item)
+  return item
+}
+
+module.exports.getMood = async () => {
+  const timestamp = new Date().toISOString()
+  const date = timestamp.substring(0, 10)
+
+  const params = {
+    TableName: tableName,
+    Key: {
+      date,
+    },
+  }
+
+  const result = await dynamoDb.get(params).promise()
+  const item = result.Item
+
+  console.log('Mood retrieved', item)
+  return item
+}
+```
+
+Update `handler.js` with the following
+
+```js
+const moodService = require('./services/mood')
+
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': true,
+}
+
+module.exports.postMood = async event => {
+  try {
+    const data = JSON.parse(event.body)
+
+    const result = await moodService.updateMood(data)
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(result),
+    }
+  } catch (e) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify(e.message),
+    }
+  }
+}
+
+module.exports.getMood = async event => {
+  try {
+    const result = await moodService.getMood()
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(result),
+    }
+  } catch (e) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify(e.message),
+    }
+  }
+}
 ```

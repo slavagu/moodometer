@@ -6,6 +6,8 @@ provider:
   stage: dev
   region: ap-southeast-2
   timeout: 30
+  environment:
+    MOOD_TABLE_NAME: ${self:custom.moodTableName}
   iamRoleStatements:
     - Effect: Allow
       Action:

@@ -1,23 +1,44 @@
-module.exports.postMood = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
-  }
+const moodService = require('./services/mood')
 
-  callback(null, response)
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': true,
 }
 
-module.exports.getMood = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
-  }
+module.exports.postMood = async event => {
+  try {
+    const data = JSON.parse(event.body)
 
-  callback(null, response)
+    const result = await moodService.updateMood(data)
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(result),
+    }
+  } catch (e) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify(e.message),
+    }
+  }
+}
+
+module.exports.getMood = async event => {
+  try {
+    const result = await moodService.getMood()
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(result),
+    }
+  } catch (e) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify(e.message),
+    }
+  }
 }
