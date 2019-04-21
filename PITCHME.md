@@ -26,9 +26,33 @@ cd moodometer
 npm start
 ```
 
+## Housekeeping
+
+Replace content of `.gitignore` file
+
+```
+# dependencies
+node_modules
+coverage
+build
+.serverless
+
+# misc
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log\*
+```
+
+Delete `package-lock.json` and create `.npmrc` file
+
+```
+package-lock=false
+```
+
 ---
 
-## Add some UI libraries
+## Add handy UI libraries
 
 Load Bootstrap CSS framework in the `head` tag of `public/index.html`
 
@@ -176,6 +200,12 @@ Create `package.json`
 }
 ```
 
+Create `.npmrc` file
+
+```
+package-lock=false
+```
+
 Install serverless framework
 
 ```
@@ -198,7 +228,7 @@ Add into `package.json` scripts section
 }
 ```
 
-Create `serverless.yml` file to define a new serverless API with DynamoDB table
+Create `serverless.yml` file to define new serverless functions
 
 ```yaml
 service: moodometer-api
@@ -209,25 +239,12 @@ provider:
   stage: dev
   region: ap-southeast-2
   timeout: 30
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:DescribeTable
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource:
-        - 'Fn::GetAtt': [MoodDynamoDbTable, Arn]
 
 plugins:
   - serverless-offline
 
 custom:
   stage: ${opt:stage, self:provider.stage}
-  moodTableName: mood-${self:custom.stage}
 
 functions:
   postMood:
@@ -244,22 +261,6 @@ functions:
           path: mood
           method: get
           cors: true
-
-resources:
-  Resources:
-    MoodDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        TableName: ${self:custom.moodTableName}
-        AttributeDefinitions:
-          - AttributeName: date
-            AttributeType: S
-        KeySchema:
-          - AttributeName: date
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 10
-          WriteCapacityUnits: 10
 ```
 
 Create `handler.js` file to define API endpoints
@@ -297,3 +298,42 @@ npm run deploy
 ```
 
 Online build should be available at https://<randomid>.execute-api.ap-southeast-2.amazonaws.com/dev/mood
+
+Add DynamoDB table into `serverless.yml`
+
+```yaml
+provider:
+  ...
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - 'Fn::GetAtt': [MoodDynamoDbTable, Arn]
+
+custom:
+  ...
+  moodTableName: mood-${self:custom.stage}
+
+resources:
+  Resources:
+    MoodDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:custom.moodTableName}
+        AttributeDefinitions:
+          - AttributeName: date
+            AttributeType: S
+        KeySchema:
+          - AttributeName: date
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 10
+          WriteCapacityUnits: 10
+```
