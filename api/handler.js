@@ -1,4 +1,4 @@
-const moodService = require('./services/mood')
+const moodService = require('./moodService')
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
