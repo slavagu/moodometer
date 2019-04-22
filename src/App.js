@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import './App.css'
 import { Doughnut } from 'react-chartjs-2'
 import { getMood, postMood } from './moodClient'
 
@@ -31,7 +30,6 @@ const VoteOptions = ({ onSelect }) => (
 
 const VoteResults = ({ mood }) => (
   <Doughnut
-    height={120}
     options={{ maintainAspectRatio: false, legend: false, rotation: 1.57 }}
     data={{
       labels: VOTE.options.map(o => o.label),
@@ -63,6 +61,7 @@ class App extends Component {
 
   handleSelect = async id => {
     this.renderUserVote(id) // optional optimisation for faster user feedback
+
     const userMood = getUserMood(id)
     const teamMood = await postMood(userMood)
     this.setState({ teamMood })
@@ -70,14 +69,17 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className="app">
+        <header>
+          <a href="https://github.com/slavagu/moodometer">moodometer</a>
+        </header>
+        <div className="app-content">
           <p>{VOTE.question}</p>
           <VoteOptions onSelect={this.handleSelect} />
-          <div className="fixed-bottom">
-            <VoteResults mood={this.state.teamMood} />
-          </div>
-        </header>
+        </div>
+        <footer>
+          <VoteResults mood={this.state.teamMood} />
+        </footer>
       </div>
     )
   }
