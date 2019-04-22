@@ -5,6 +5,24 @@ const headers = {
   'Access-Control-Allow-Credentials': true,
 }
 
+module.exports.getMood = async event => {
+  try {
+    const result = await moodService.getMood()
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(result),
+    }
+  } catch (e) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify(e.message),
+    }
+  }
+}
+
 module.exports.postMood = async event => {
   try {
     const data = JSON.parse(event.body)
@@ -25,20 +43,3 @@ module.exports.postMood = async event => {
   }
 }
 
-module.exports.getMood = async event => {
-  try {
-    const result = await moodService.getMood()
-
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify(result),
-    }
-  } catch (e) {
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify(e.message),
-    }
-  }
-}

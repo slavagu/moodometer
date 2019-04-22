@@ -29,19 +29,19 @@ custom:
   moodTableName: mood-${self:custom.stage}
 
 functions:
-  postMood:
-    handler: handler.postMood
-    events:
-      - http:
-          path: mood
-          method: post
-          cors: true
   getMood:
     handler: handler.getMood
     events:
       - http:
           path: mood
           method: get
+          cors: true
+  postMood:
+    handler: handler.postMood
+    events:
+      - http:
+          path: mood
+          method: post
           cors: true
 
 resources:
