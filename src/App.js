@@ -1,69 +1,44 @@
 import React, { Component } from 'react'
 import './App.css'
 import { Doughnut } from 'react-chartjs-2'
+import { getMood, postMood } from './moodClient'
 
-const MOOD = [
-  { id: 'red', label: 'so-so', button: 'btn-danger', color: '#EB3547' },
-  { id: 'yellow', label: 'good', button: 'btn-warning', color: '#FFC03E' },
-  { id: 'green', label: 'great', button: 'btn-success', color: '#00A553' },
-]
-
-const apiUrl = process.env.REACT_APP_API_URL
-
-const headers = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json',
+const VOTE = {
+  question: 'How do you feel today?',
+  options: [
+    { id: 'red', label: 'so-so', button: 'btn-danger', color: '#dc3545' },
+    { id: 'yellow', label: 'good', button: 'btn-warning', color: '#ffc107' },
+    { id: 'green', label: 'great', button: 'btn-success', color: '#28a745' },
+  ],
 }
 
-const postMood = async mood => {
-  try {
-    console.log('Posting mood', mood)
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(mood),
-    })
-    const content = await response.json()
-    return content
-  } catch (e) {
-    console.error(e)
-  }
-}
+const getUserMood = voteId =>
+  Object.assign({}, ...VOTE.options.map(o => ({ [o.id]: 0, [voteId]: 1 })))
 
-const getMood = async () => {
-  try {
-    const response = await fetch(apiUrl, { headers })
-    const content = await response.json()
-    return content
-  } catch (e) {
-    console.error(e)
-  }
-}
-
-const Options = ({ onSelect }) => (
+const VoteOptions = ({ onSelect }) => (
   <div>
-    {MOOD.map(m => (
+    {VOTE.options.map(o => (
       <button
-        key={m.id}
-        className={`btn ${m.button} btn-lg m-2`}
-        onClick={() => onSelect(m.id)}
+        key={o.id}
+        className={`btn ${o.button} btn-lg m-2`}
+        onClick={() => onSelect(o.id)}
       >
-        {m.label}
+        {o.label}
       </button>
     ))}
   </div>
 )
 
-const Chart = ({ mood }) => (
+const VoteResults = ({ mood }) => (
   <Doughnut
     height={120}
     options={{ maintainAspectRatio: false, legend: false, rotation: 1.57 }}
     data={{
-      labels: MOOD.map(m => m.label),
+      labels: VOTE.options.map(o => o.label),
       datasets: [
         {
-          data: mood && [mood.red, mood.yellow, mood.green],
-          backgroundColor: MOOD.map(m => m.color),
+          data: mood && VOTE.options.map(o => mood[o.id]),
+          backgroundColor: VOTE.options.map(o => o.color),
         },
       ],
     }}
@@ -72,26 +47,35 @@ const Chart = ({ mood }) => (
 
 class App extends Component {
   state = {
-    mood: null,
+    teamMood: null,
   }
+
   async componentDidMount() {
-    const mood = await getMood()
-    this.setState({ mood })
+    const teamMood = await getMood()
+    this.setState({ teamMood })
   }
-  handleSelect = async moodId => {
-    const mood = { red: 0, yellow: 0, green: 0 }
-    mood[moodId] = 1
-    const updatedMood = await postMood(mood)
-    this.setState({ mood: updatedMood })
+
+  renderUserVote = id => {
+    const { teamMood } = this.state
+    teamMood[id]++
+    this.setState({ teamMood })
   }
+
+  handleSelect = async id => {
+    this.renderUserVote(id) // optional optimisation for faster user feedback
+    const userMood = getUserMood(id)
+    const teamMood = await postMood(userMood)
+    this.setState({ teamMood })
+  }
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <p>How do you feel today?</p>
-          <Options onSelect={this.handleSelect} />
+          <p>{VOTE.question}</p>
+          <VoteOptions onSelect={this.handleSelect} />
           <div className="fixed-bottom">
-            <Chart mood={this.state.mood} />
+            <VoteResults mood={this.state.teamMood} />
           </div>
         </header>
       </div>
