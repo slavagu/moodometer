@@ -4,6 +4,9 @@ coverage
 build
 .serverless
 
+# environment
+.env
+
 # misc
 .DS_Store
 npm-debug.log*
