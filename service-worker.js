@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "https://slavagu.github.io/moodometer/precache-manifest.58476dce4f11ac9e80610e9396f9bbfe.js"
+  "https://slavagu.github.io/moodometer/precache-manifest.01812f1b19e92a1611a5fbb00e259934.js"
 );
 
 workbox.clientsClaim();

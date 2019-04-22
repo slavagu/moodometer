@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "https://slavagu.github.io/moodometer/static/css/main.05edae09.chunk.css"
   },
   {
-    "revision": "4539d0dbecb98f305922902d1c951314",
+    "revision": "4644d0eec49f1f884427fc00e8d80c4f",
     "url": "https://slavagu.github.io/moodometer/index.html"
   }
 ];
