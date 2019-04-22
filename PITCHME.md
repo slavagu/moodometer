@@ -77,8 +77,8 @@ npm i react-chartjs-2 chart.js
 
 Add a few voting buttons to capture user choice and a chart to show total team mood
 
-![UI](./pitchme-images/ui-1.png)
-![UI](./pitchme-images/ui-2.png)
+![VoteOptions](PITCHME.1.png)
+![VoteResults](PITCHME.2.png)
 
 ---
 
@@ -299,6 +299,6 @@ Online build should be running at https://slavagu.github.io/moodometer/
 
 ---
 
-![UI](./pitchme-images/ui-3.png)
+![Screenshot](PITCHME.3.png)
 
 ## The end
