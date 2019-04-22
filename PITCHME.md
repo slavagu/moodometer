@@ -26,6 +26,8 @@ cd moodometer
 npm start
 ```
 
+---
+
 ## Housekeeping
 
 Replace content of `.gitignore` file
@@ -37,14 +39,18 @@ coverage
 build
 .serverless
 
+# environment
+.env
+
 # misc
 .DS_Store
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log\*
+yarn-error.log*
+
 ```
 
-Delete `package-lock.json` and create `.npmrc` file
+Delete `package-lock.json` and create `.npmrc` file with
 
 ```
 package-lock=false
@@ -52,7 +58,7 @@ package-lock=false
 
 ---
 
-## Add handy UI libraries
+## Add Bootstrap and Chart.js
 
 Load Bootstrap CSS framework in the `head` tag of `public/index.html`
 
@@ -73,58 +79,91 @@ npm i react-chartjs-2 chart.js
 
 ## Build the UI
 
-Replace `src/App.js` with the following
+Update [App.js](src/App.js) content with the following
 
 ```js
 import React, { Component } from 'react'
-import './App.css'
 import { Doughnut } from 'react-chartjs-2'
+import { getMood, postMood } from './moodClient'
 
-const labels = ['so-so', 'good', 'great']
-const buttons = ['btn-danger', 'btn-warning', 'btn-success']
-const colors = ['#EB3547', '#FFC03E', '#00A553']
+const VOTE = {
+  question: 'How do you feel today?',
+  options: [
+    { id: 'red', label: 'so-so', button: 'btn-danger', color: '#dc3545' },
+    { id: 'yellow', label: 'good', button: 'btn-warning', color: '#ffc107' },
+    { id: 'green', label: 'great', button: 'btn-success', color: '#28a745' },
+  ],
+}
 
-const Options = ({ onSelect }) => (
+const getUserMood = voteId =>
+  Object.assign({}, ...VOTE.options.map(o => ({ [o.id]: 0, [voteId]: 1 })))
+
+const VoteOptions = ({ onSelect }) => (
   <div>
-    {buttons.map((btn, i) => (
+    {VOTE.options.map(o => (
       <button
-        key={labels[i]}
-        className={`btn ${btn} btn-lg m-2`}
-        onClick={() => onSelect(i)}
+        key={o.id}
+        className={`btn ${o.button} btn-lg m-2`}
+        onClick={() => onSelect(o.id)}
       >
-        {labels[i]}
+        {o.label}
       </button>
     ))}
   </div>
 )
 
-const Report = ({ answers }) => (
+const VoteResults = ({ mood }) => (
   <Doughnut
-    height={120}
     options={{ maintainAspectRatio: false, legend: false, rotation: 1.57 }}
-    data={{ labels, datasets: [{ data: answers, backgroundColor: colors }] }}
+    data={{
+      labels: VOTE.options.map(o => o.label),
+      datasets: [
+        {
+          data: mood && VOTE.options.map(o => mood[o.id]),
+          backgroundColor: VOTE.options.map(o => o.color),
+        },
+      ],
+    }}
   />
 )
 
 class App extends Component {
   state = {
-    answers: [0, 0, 0],
+    teamMood: null,
   }
-  handleSelect = choice => {
-    const answers = [...this.state.answers]
-    answers[choice]++
-    this.setState({ answers })
+
+  async componentDidMount() {
+    const teamMood = await getMood()
+    this.setState({ teamMood })
   }
+
+  renderUserVote = id => {
+    const { teamMood } = this.state
+    teamMood[id]++
+    this.setState({ teamMood })
+  }
+
+  handleSelect = async id => {
+    this.renderUserVote(id) // optional optimisation for faster user feedback
+
+    const userMood = getUserMood(id)
+    const teamMood = await postMood(userMood)
+    this.setState({ teamMood })
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <p>How do you feel today?</p>
-          <Options onSelect={this.handleSelect} />
-          <div className="fixed-bottom">
-            <Report answers={this.state.answers} />
-          </div>
+      <div className="app">
+        <header>
+          <a href="https://github.com/slavagu/moodometer">moodometer</a>
         </header>
+        <div className="app-content">
+          <p>{VOTE.question}</p>
+          <VoteOptions onSelect={this.handleSelect} />
+        </div>
+        <footer>
+          <VoteResults mood={this.state.teamMood} />
+        </footer>
       </div>
     )
   }
@@ -132,6 +171,8 @@ class App extends Component {
 
 export default App
 ```
+
+---
 
 ## Check the new UI
 
