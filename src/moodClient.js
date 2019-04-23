@@ -6,7 +6,8 @@ export const getMood = async () => {
     const content = await response.json()
     return content
   } catch (e) {
-    console.error(e)
+    console.log(e)
+    return null
   }
 }
 
@@ -21,6 +22,7 @@ export const postMood = async mood => {
     console.log('Updated mood', updatedMood)
     return updatedMood
   } catch (e) {
-    console.error(e)
+    console.log(e)
+    return null
   }
 }
