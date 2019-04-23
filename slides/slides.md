@@ -2,7 +2,7 @@
 
 Step-by-step guide on how to create a simple serverless app.
 
-> NOTE code snippets provided in this slideshow are not complete; refer to the [source code](https://github.com/slavagu/moodometer) for a fully working solution.
+> NOTE code snippets provided in these slides are not complete; refer to the [source code](https://github.com/slavagu/moodometer) for a fully working solution.
 
 ---
 
