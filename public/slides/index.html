@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>moodometer - slides</title>
+    <title>moodometer slideshow</title>
     <meta charset="utf-8" />
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-      @import url(
-        https://fonts.googleapis.com/css?family=Droid+Serif:400,
-        700,
-        400italic
-      );
-
       body {
-        font-family: 'Droid Serif';
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          Helvetica, Arial, sans-serif;
       }
       h1,
       h2,
@@ -22,7 +17,13 @@
       }
       .remark-code,
       .remark-inline-code {
-        /* font-family: 'Ubuntu Mono'; */
+        color: #a90201;
+      }
+      blockquote {
+        border-left: 0.3em solid #79b6dc;
+        padding: 0 15px;
+        margin: 0;
+        background-color: #efefef;
       }
     </style>
   </head>
@@ -30,7 +31,7 @@
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
     <script>
       var slideshow = remark.create({
-        sourceUrl: './PITCHME.md',
+        sourceUrl: './slides.md',
       })
     </script>
   </body>

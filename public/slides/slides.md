@@ -1,12 +1,12 @@
 # moodometer - team mood tracker
 
-A simple app to capture team mood and see how it changes over time.
+Step-by-step guide on how to create a simple serverless app.
 
-> This is a demo project showing how to create a serverless app in a few simple steps, inspired by https://serverless-stack.com
+> NOTE code snippets provided in these slides are not complete; refer to the [source code](https://github.com/slavagu/moodometer) for a fully working solution.
 
 ---
 
-## Build React UI
+## Create React App
 
 Ensure you have node 8.10+ and npm 6+ installed
 
@@ -77,8 +77,8 @@ npm i react-chartjs-2 chart.js
 
 Add a few voting buttons to capture user choice and a chart to show total team mood
 
-![VoteOptions](PITCHME.1.png)
-![VoteResults](PITCHME.2.png)
+![VoteOptions](ui-options.png)
+![VoteResults](ui-results.png)
 
 ---
 
@@ -102,7 +102,7 @@ Create `api` folder with default `package.json`
 
 Create `.npmrc` file to avoid generation of `package-lock.json`
 
-```
+```ini
 package-lock=false
 ```
 
@@ -225,18 +225,29 @@ module.exports.updateMood = async data => {
 
 ---
 
-## Deploy the API
+## Run the API locally
 
-Use serverless offline to run API locally at http://localhost:4000/mood
+Use serverless offline to run the API locally
 
 ```sh
 cd api
 npm start
 ```
 
-Deploy the API to AWS using default profile
+Access it at http://localhost:4000/mood
+
+> The API will use default aws profile to access DynamoDB in the cloud
+
+---
+
+## Deploy the API to AWS
+
+Deploy the API to AWS
+
+> Ensure your default aws profile is setup to access AWS resources
 
 ```sh
+cd api
 npm run deploy
 ```
 
@@ -299,6 +310,6 @@ Online build should be running at https://slavagu.github.io/moodometer/
 
 ---
 
-![Screenshot](PITCHME.3.png)
+![UI](ui-full.png)
 
 ## The end
