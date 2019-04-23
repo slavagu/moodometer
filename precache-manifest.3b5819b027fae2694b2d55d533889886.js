@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "https://slavagu.github.io/moodometer/static/js/runtime~main.2bec7ca0.js"
   },
   {
-    "revision": "2fa58e18457cb744509b",
+    "revision": "490eeaf26dfae72d56b4",
     "url": "https://slavagu.github.io/moodometer/static/js/main.0f44cf96.chunk.js"
   },
   {
@@ -12,11 +12,11 @@ self.__precacheManifest = [
     "url": "https://slavagu.github.io/moodometer/static/js/2.093b1075.chunk.js"
   },
   {
-    "revision": "2fa58e18457cb744509b",
-    "url": "https://slavagu.github.io/moodometer/static/css/main.05edae09.chunk.css"
+    "revision": "490eeaf26dfae72d56b4",
+    "url": "https://slavagu.github.io/moodometer/static/css/main.c4e2a1dd.chunk.css"
   },
   {
-    "revision": "23e8f464bf1a844bd4f711510841af94",
+    "revision": "f79854e250d052b3d0323512e7a3d943",
     "url": "https://slavagu.github.io/moodometer/index.html"
   }
 ];
