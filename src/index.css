@@ -15,7 +15,7 @@ body {
   flex-direction: column;
   text-align: center;
   background-color: #282c34;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(14px + 3vmin);
   color: white;
   padding-bottom: 10px;
 }
@@ -25,4 +25,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;  
+}
+
+.btn-xl {
+  font-size: calc(14px + 3vmin);
 }

@@ -49,3 +49,20 @@ module.exports.updateMood = async mood => {
   return updatedMood
 }
 
+module.exports.getHistory = async () => {
+  const params = {
+    TableName: tableName,
+  }
+
+  const items = []
+  do {
+    const result = await dynamoDb.scan(params).promise()
+    items.push(...result.Items)
+    params.ExclusiveStartKey = result.LastEvaluatedKey
+  } while (params.ExclusiveStartKey)
+
+  items.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0))
+
+  console.log('Mood history retrieved', items)
+  return items
+}

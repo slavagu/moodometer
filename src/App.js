@@ -1,25 +1,22 @@
 import React, { Component } from 'react'
-import { Doughnut } from 'react-chartjs-2'
-import { getMood, postMood } from './moodClient'
+import { Bar, Doughnut } from 'react-chartjs-2'
+import { getMood, postMood, getHistory } from './moodClient'
 
-const VOTE = {
+const MOOD = {
   question: 'How do you feel today?',
   options: [
-    { id: 'red', label: 'so-so', button: 'btn-danger', color: '#dc3545' },
-    { id: 'yellow', label: 'good', button: 'btn-warning', color: '#ffc107' },
+    { id: 'red', label: 'bad', button: 'btn-danger', color: '#dc3545' },
+    { id: 'yellow', label: 'normal', button: 'btn-warning', color: '#ffc107' },
     { id: 'green', label: 'great', button: 'btn-success', color: '#28a745' },
   ],
 }
 
-const getUserMood = voteId =>
-  Object.assign({}, ...VOTE.options.map(o => ({ [o.id]: 0, [voteId]: 1 })))
-
-const VoteOptions = ({ onSelect }) => (
+const Options = ({ onSelect }) => (
   <div>
-    {VOTE.options.map(o => (
+    {MOOD.options.map(o => (
       <button
         key={o.id}
-        className={`btn ${o.button} btn-lg m-2`}
+        className={`btn ${o.button} btn-xl m-2`}
         onClick={() => onSelect(o.id)}
       >
         {o.label}
@@ -28,43 +25,78 @@ const VoteOptions = ({ onSelect }) => (
   </div>
 )
 
-const VoteResults = ({ mood }) => (
+const Today = ({ mood }) => (
   <Doughnut
     options={{ maintainAspectRatio: false, legend: false, rotation: 1.57 }}
     data={{
-      labels: VOTE.options.map(o => o.label),
+      labels: MOOD.options.map(o => o.label),
       datasets: [
         {
-          data: mood && VOTE.options.map(o => mood[o.id]),
-          backgroundColor: VOTE.options.map(o => o.color),
+          data: mood && MOOD.options.map(o => mood[o.id]),
+          backgroundColor: MOOD.options.map(o => o.color),
         },
       ],
     }}
   />
 )
 
+const Trend = ({ history }) => {
+  if (!history) return null
+
+  const data = {
+    labels: history.map(m => m.date),
+    datasets: MOOD.options.map(o => ({
+      label: o.label,
+      type: 'line',
+      data: history.map(m => m[o.id]),
+      fill: false,
+      borderColor: o.color,
+      backgroundColor: o.color,
+    })),
+  }
+
+  const options = {
+    maintainAspectRatio: false,
+    legend: false,
+    scales: {
+      yAxes: [
+        {
+          // stacked: true,
+        },
+      ],
+    },
+  }
+
+  return <Bar data={data} options={options} height={200} />
+}
+
 class App extends Component {
   state = {
-    teamMood: null,
+    history: null,
+    todayMood: null,
   }
 
   async componentDidMount() {
-    const teamMood = await getMood()
-    this.setState({ teamMood })
+    const todayMood = await getMood()
+    const history = await getHistory()
+    this.setState({ todayMood, history })
   }
 
-  renderUserVote = id => {
-    const { teamMood } = this.state
-    teamMood[id]++
-    this.setState({ teamMood })
+  renderUserMood = id => {
+    const { todayMood } = this.state
+    todayMood[id]++
+    this.setState({ todayMood })
   }
 
-  handleSelect = async id => {
-    this.renderUserVote(id) // optional optimisation for faster user feedback
+  handleSelect = async moodId => {
+    this.renderUserMood(moodId) // optional optimisation for faster user feedback
 
-    const userMood = getUserMood(id)
-    const teamMood = await postMood(userMood)
-    this.setState({ teamMood })
+    const userMood = Object.assign(
+      {},
+      ...MOOD.options.map(o => ({ [o.id]: 0, [moodId]: 1 }))
+    )
+    const todayMood = await postMood(userMood)
+    this.setState({ todayMood })
   }
 
   render() {
@@ -74,11 +106,12 @@ class App extends Component {
           <a href="https://github.com/slavagu/moodometer">moodometer</a>
         </header>
         <div className="app-content">
-          <p>{VOTE.question}</p>
-          <VoteOptions onSelect={this.handleSelect} />
+          {/* <Today mood={this.state.todayMood} /> */}
+          <p>{MOOD.question}</p>
+          <Options onSelect={this.handleSelect} />
         </div>
         <footer>
-          <VoteResults mood={this.state.teamMood} />
+          <Trend history={this.state.history} />
         </footer>
       </div>
     )

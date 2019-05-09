@@ -43,3 +43,21 @@ module.exports.postMood = async event => {
   }
 }
 
+module.exports.getHistory = async event => {
+  try {
+    const result = await moodService.getHistory()
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(result),
+    }
+  } catch (e) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify(e.message),
+    }
+  }
+}
+

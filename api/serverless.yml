@@ -43,6 +43,13 @@ functions:
           path: mood
           method: post
           cors: true
+  getHistory:
+    handler: handler.getHistory
+    events:
+      - http:
+          path: history
+          method: get
+          cors: true
 
 resources:
   Resources:
