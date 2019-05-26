@@ -7,12 +7,13 @@
   "license": "ISC",
   "devDependencies": {
     "aws-sdk": "^2.441.0",
+    "jest": "^24.8.0",
     "serverless": "^1.41.0",
     "serverless-offline": "^4.9.4"
   },
   "scripts": {
     "start": "serverless offline start --port 4000",
     "deploy": "serverless deploy --verbose",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   }
 }
