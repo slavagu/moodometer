@@ -192,9 +192,7 @@ resources:
         KeySchema:
           - AttributeName: date
             KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
+        BillingMode: PAY_PER_REQUEST
 ```
 
 ---
