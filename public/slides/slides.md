@@ -30,7 +30,7 @@ Local build should be running at http://localhost:3000/
 
 ---
 
-## Clean up
+## Tidy up
 
 Edit [.gitignore](.gitignore) to exclude dependencies and temporary files from git
 
@@ -44,9 +44,9 @@ npm-debug.log*
 .env
 ```
 
-Delete [package-lock.json](package-lock.json), which isn't necessary for this hobby project
+You can also delete [package-lock.json](package-lock.json), which isn't necessary for this hobby project
 
-Create `.npmrc` file to let npm know about this bold decision
+To do that create `.npmrc` file with the following
 
 ```ini
 package-lock=false
@@ -100,7 +100,7 @@ Create `api` folder with default `package.json`
 }
 ```
 
-Create `.npmrc` file to avoid generation of `package-lock.json`
+You can also create `.npmrc` file to avoid generation of `package-lock.json`
 
 ```ini
 package-lock=false
@@ -199,7 +199,7 @@ resources:
 
 ## Use AWS SDK to access DynamoDB
 
-Add sdk as a dev dependency because it's available in Lambda environment
+Add sdk as a dev dependency; it's available in cloud Lambda environment by default
 
 ```sh
 npm i -D aws-sdk
@@ -234,22 +234,7 @@ npm start
 
 Access it at http://localhost:4000/mood
 
-> The API will use default aws profile to access DynamoDB in the cloud
-
----
-
-## Deploy the API to AWS
-
-Deploy the API to AWS
-
-> Ensure your default aws profile is setup to access AWS resources
-
-```sh
-cd api
-npm run deploy
-```
-
-Online API should be available at https://RANDOMID.execute-api.ap-southeast-2.amazonaws.com/dev/mood
+> NOTE The API will use default aws profile to access DynamoDB in the cloud
 
 ---
 
@@ -278,6 +263,30 @@ export default App
 
 ---
 
+## Deploy the API to AWS
+
+Deploy the API to AWS
+
+> Ensure your default aws profile is setup to access AWS resources
+
+```sh
+cd api
+npm run deploy
+```
+
+Online API should be available at https://YOUR-API-ID.execute-api.YOUR-AWS-REGION.amazonaws.com/dev/mood
+
+---
+
+## Create .env file for UI deployment
+
+```ini
+PUBLIC_URL="https://YOUR-GITHUB-USERNAME.github.io/moodometer"
+REACT_APP_API_URL="https://YOUR-API-ID.execute-api.YOUR-AWS-REGION.amazonaws.com/dev"
+```
+
+---
+
 ## Deploy the UI to GitHub pages
 
 Install `gh-pages` as a dev dependency
@@ -290,7 +299,7 @@ Set homepage link in `package.json` and add deploy task
 
 ```js
 {
-  "homepage": "https://slavagu.github.io/moodometer",
+  "homepage": "https://YOUR-GITHUB-USERNAME.github.io/moodometer",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
@@ -304,7 +313,7 @@ Deploy the website
 npm run deploy
 ```
 
-Online build should be running at https://slavagu.github.io/moodometer/
+Online build should be running at https://YOUR-GITHUB-USERNAME.github.io/moodometer/
 
 ---
 
