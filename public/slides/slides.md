@@ -6,6 +6,14 @@ Step-by-step guide on how to create a simple serverless app.
 
 ---
 
+## High Level Architecture
+
+The application is made of UI and API. The UI is built on React and hosted on GitHub Pages for free. The UI can be hosted on any environment that supports serving of static web pages like AWS S3, Netlify, Zeit Now, etc. API is built on AWS Lambda and is accessible via API Gateway. DynamoDB is used as a database for its ability to scale automatically and cheap running costs when pay-as-you-go model is used. Overall, the hosting should be either free or very cheap in vicinity of a few dollars per month.
+
+![Diagram](diagram.png)
+
+---
+
 ## Create React App
 
 Ensure you have node 8.10+ and npm 6+ installed
