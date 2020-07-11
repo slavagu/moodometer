@@ -1,13 +1,13 @@
 {
   "main.css": "https://slavagu.github.io/moodometer/static/css/main.d29353a8.chunk.css",
-  "main.js": "https://slavagu.github.io/moodometer/static/js/main.7d349ccf.chunk.js",
-  "main.js.map": "https://slavagu.github.io/moodometer/static/js/main.7d349ccf.chunk.js.map",
+  "main.js": "https://slavagu.github.io/moodometer/static/js/main.1d64af01.chunk.js",
+  "main.js.map": "https://slavagu.github.io/moodometer/static/js/main.1d64af01.chunk.js.map",
   "runtime~main.js": "https://slavagu.github.io/moodometer/static/js/runtime~main.2bec7ca0.js",
   "runtime~main.js.map": "https://slavagu.github.io/moodometer/static/js/runtime~main.2bec7ca0.js.map",
-  "static/js/2.afdc5637.chunk.js": "https://slavagu.github.io/moodometer/static/js/2.afdc5637.chunk.js",
-  "static/js/2.afdc5637.chunk.js.map": "https://slavagu.github.io/moodometer/static/js/2.afdc5637.chunk.js.map",
+  "static/js/2.aeeb9c38.chunk.js": "https://slavagu.github.io/moodometer/static/js/2.aeeb9c38.chunk.js",
+  "static/js/2.aeeb9c38.chunk.js.map": "https://slavagu.github.io/moodometer/static/js/2.aeeb9c38.chunk.js.map",
   "index.html": "https://slavagu.github.io/moodometer/index.html",
-  "precache-manifest.e022cebaef0365f750de91b0f305a549.js": "https://slavagu.github.io/moodometer/precache-manifest.e022cebaef0365f750de91b0f305a549.js",
+  "precache-manifest.53ab3bf1782038b4088e39b6b7efd349.js": "https://slavagu.github.io/moodometer/precache-manifest.53ab3bf1782038b4088e39b6b7efd349.js",
   "service-worker.js": "https://slavagu.github.io/moodometer/service-worker.js",
   "static/css/main.d29353a8.chunk.css.map": "https://slavagu.github.io/moodometer/static/css/main.d29353a8.chunk.css.map"
 }
