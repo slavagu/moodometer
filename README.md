@@ -6,9 +6,9 @@ A simple app to capture team mood and see how it changes over time.
 
 The app is built with React and NodeJS.
 
-The API hosted in AWS and uses API Gateway / Lambda / DynamoDB and is deployed with serverless.com framework.
+The API uses AWS API Gateway, Lambda, and DynamoDB and is deployed with serverless.com framework.
 
-To run both UI and API in a local dev environment: `npm i && npm run dev`
+To run both UI and API in a local dev environment: `npm run dev`
 
 > NOTE The API will use default aws profile to access DynamoDB in the cloud
 
