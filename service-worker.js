@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "https://slavagu.github.io/moodometer/precache-manifest.17aa27afedb7f7fd140a11392d4d25a3.js"
+  "https://moodometer.mymo.com.au/precache-manifest.23e3b03ddf5c228b81c55b97ee69bced.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("https://slavagu.github.io/moodometer/index.html", {
+workbox.routing.registerNavigationRoute("https://moodometer.mymo.com.au/index.html", {
   
   blacklist: [/^\/_/,/\/[^/]+\.[^/]+$/],
 });
