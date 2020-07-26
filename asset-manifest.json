@@ -1,13 +1,13 @@
 {
-  "main.css": "https://moodometer.mymo.com.au/static/css/main.d29353a8.chunk.css",
-  "main.js": "https://moodometer.mymo.com.au/static/js/main.23dc91a9.chunk.js",
-  "main.js.map": "https://moodometer.mymo.com.au/static/js/main.23dc91a9.chunk.js.map",
-  "runtime~main.js": "https://moodometer.mymo.com.au/static/js/runtime~main.ccff99bd.js",
-  "runtime~main.js.map": "https://moodometer.mymo.com.au/static/js/runtime~main.ccff99bd.js.map",
-  "static/js/2.115b250b.chunk.js": "https://moodometer.mymo.com.au/static/js/2.115b250b.chunk.js",
-  "static/js/2.115b250b.chunk.js.map": "https://moodometer.mymo.com.au/static/js/2.115b250b.chunk.js.map",
-  "index.html": "https://moodometer.mymo.com.au/index.html",
-  "precache-manifest.23e3b03ddf5c228b81c55b97ee69bced.js": "https://moodometer.mymo.com.au/precache-manifest.23e3b03ddf5c228b81c55b97ee69bced.js",
-  "service-worker.js": "https://moodometer.mymo.com.au/service-worker.js",
-  "static/css/main.d29353a8.chunk.css.map": "https://moodometer.mymo.com.au/static/css/main.d29353a8.chunk.css.map"
+  "main.css": "https://slavagu.github.io/moodometer/static/css/main.d29353a8.chunk.css",
+  "main.js": "https://slavagu.github.io/moodometer/static/js/main.9b8e16a4.chunk.js",
+  "main.js.map": "https://slavagu.github.io/moodometer/static/js/main.9b8e16a4.chunk.js.map",
+  "runtime~main.js": "https://slavagu.github.io/moodometer/static/js/runtime~main.2bec7ca0.js",
+  "runtime~main.js.map": "https://slavagu.github.io/moodometer/static/js/runtime~main.2bec7ca0.js.map",
+  "static/js/2.7dcad65c.chunk.js": "https://slavagu.github.io/moodometer/static/js/2.7dcad65c.chunk.js",
+  "static/js/2.7dcad65c.chunk.js.map": "https://slavagu.github.io/moodometer/static/js/2.7dcad65c.chunk.js.map",
+  "index.html": "https://slavagu.github.io/moodometer/index.html",
+  "precache-manifest.f112a6826f2219268936240efad7b056.js": "https://slavagu.github.io/moodometer/precache-manifest.f112a6826f2219268936240efad7b056.js",
+  "service-worker.js": "https://slavagu.github.io/moodometer/service-worker.js",
+  "static/css/main.d29353a8.chunk.css.map": "https://slavagu.github.io/moodometer/static/css/main.d29353a8.chunk.css.map"
 }
