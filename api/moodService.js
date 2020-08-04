@@ -1,36 +1,35 @@
 const AWS = require('aws-sdk')
+const moment = require('moment-timezone')
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 const tableName = process.env.MOOD_TABLE_NAME
 
-const defaultState = date => ({ date, red: 0, yellow: 0, green: 0 })
+const defaultMood = (date) => ({ date, red: 0, yellow: 0, green: 0 })
 
-const today = () => new Date().toISOString().substring(0, 10)
-
-module.exports.getMood = async () => {
-  const date = today()
-
+module.exports.getMood = async ({ userId, date }) => {
   const params = {
     TableName: tableName,
     Key: {
+      userId: userId,
       date,
     },
   }
 
   const result = await dynamoDb.get(params).promise()
-  const mood = result.Item || defaultState(date)
+  const mood = result.Item || defaultMood(date)
 
-  console.log('Mood retrieved', mood)
+  console.log(`Mood retrieved for user '${userId}':`, mood)
   return mood
 }
 
-module.exports.updateMood = async mood => {
-  const { red, yellow, green } = mood
-  const date = today()
+module.exports.updateMood = async ({ userId, date, data }) => {
+  const { red, yellow, green } = data
+  console.log(`Updating mood for user '${userId}':`, data)
 
   const params = {
     TableName: tableName,
     Key: {
+      userId,
       date,
     },
     UpdateExpression: 'ADD red :r, yellow :y, green :g',
@@ -45,24 +44,33 @@ module.exports.updateMood = async mood => {
   const result = await dynamoDb.update(params).promise()
   const updatedMood = result.Attributes
 
-  console.log('Mood updated', updatedMood)
+  console.log(`Mood updated for user '${userId}':`, updatedMood)
   return updatedMood
 }
 
-module.exports.getHistory = async () => {
+module.exports.getHistory = async ({ userId, date }) => {
+  const startDate = moment(date).subtract(3, 'months').format('YYYY-MM-DD')
+
   const params = {
     TableName: tableName,
+    KeyConditionExpression: 'userId = :uid and #date >= :startDate',
+    ExpressionAttributeNames: { '#date': 'date' },
+    ExpressionAttributeValues: {
+      ':uid': userId,
+      ':startDate': startDate,
+    },
+    ScanIndexForward: true,
   }
-
   const items = []
   do {
-    const result = await dynamoDb.scan(params).promise()
+    const result = await dynamoDb.query(params).promise()
     items.push(...result.Items)
     params.ExclusiveStartKey = result.LastEvaluatedKey
   } while (params.ExclusiveStartKey)
 
-  items.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0))
+  console.log(
+    `Mood history retrieved for user '${userId}': ${items.length} items(s)`
+  )
 
-  console.log('Mood history retrieved', items)
   return items
 }

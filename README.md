@@ -1,17 +1,19 @@
 # moodometer - team mood tracker
 
-A simple app to capture team mood and see how it changes over time.
+A simple web app to capture team mood and see how it changes over time.
 
-> This is a demo project showing how to create a serverless app in a few simple steps, inspired by https://serverless-stack.com
+Website https://moodometer.mymo.com.au
 
-The app is built with React and NodeJS.
+<img src="demo.png" alt="demo" width="200"/>
 
-The API uses AWS API Gateway, Lambda, and DynamoDB and is deployed with serverless.com framework.
+## architecture
+
+Inspired by serverless-stack.com and built with NodeJS, ReactJS, Lambda, DynamoDB, AWS API Gateway (HTTP API + JWT Authorizer), Auth0 and deployed to AWS using serverless.com framework
+
+![Diagram](./diagram.svg)
+
+## development
 
 To run both UI and API in a local dev environment: `npm run dev`
 
-> NOTE The API will use default aws profile to access DynamoDB in the cloud
-
-Demo https://slavagu.github.io/moodometer
-
-Slides https://slavagu.github.io/moodometer/slides
+NOTE locally running API has no auth validation and will use default aws profile to access AWS resources in the cloud.

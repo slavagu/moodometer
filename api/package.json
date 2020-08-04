@@ -8,12 +8,16 @@
   "devDependencies": {
     "aws-sdk": "^2.713.0",
     "jest": "^26.1.0",
-    "serverless": "^1.74.1",
+    "serverless": "^1.77.1",
+    "serverless-dotenv-plugin": "^3.0.0",
     "serverless-offline": "^6.4.0"
   },
   "scripts": {
-    "start": "serverless offline --httpPort 4000",
+    "start": "serverless offline --httpPort 4000 --noAuth",
     "deploy": "serverless deploy --verbose",
     "test": "jest"
+  },
+  "dependencies": {
+    "moment-timezone": "^0.5.31"
   }
 }

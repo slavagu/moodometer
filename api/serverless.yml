@@ -5,9 +5,24 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: ap-southeast-2
-  timeout: 30
+  timeout: 20
   environment:
     MOOD_TABLE_NAME: ${self:custom.moodTableName}
+  httpApi:
+    payload: '1.0'
+    cors:
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+        - Time-Zone
+    authorizers:
+      jwtAuthorizer:
+        identitySource: $request.header.Authorization
+        issuerUrl: ${env:AUTH0_ISSUER_URL}
+        audience:
+          - ${env:AUTH0_AUDIENCE}
+  logs:
+    httpApi: true
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -23,6 +38,7 @@ provider:
 
 plugins:
   - serverless-offline
+  - serverless-dotenv-plugin
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -32,24 +48,27 @@ functions:
   getMood:
     handler: handler.getMood
     events:
-      - http:
-          path: mood
-          method: get
+      - httpApi:
+          path: /mood
+          method: GET
           cors: true
+          authorizer: jwtAuthorizer
   postMood:
     handler: handler.postMood
     events:
-      - http:
-          path: mood
-          method: post
+      - httpApi:
+          path: /mood
+          method: POST
           cors: true
+          authorizer: jwtAuthorizer
   getHistory:
     handler: handler.getHistory
     events:
-      - http:
-          path: history
-          method: get
+      - httpApi:
+          path: /history
+          method: GET
           cors: true
+          authorizer: jwtAuthorizer
 
 resources:
   Resources:
@@ -58,9 +77,13 @@ resources:
       Properties:
         TableName: ${self:custom.moodTableName}
         AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
           - AttributeName: date
             AttributeType: S
         KeySchema:
-          - AttributeName: date
+          - AttributeName: userId
             KeyType: HASH
+          - AttributeName: date
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
