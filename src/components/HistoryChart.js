@@ -1,6 +1,6 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2'
-import MOOD from '../assets/mood'
+import { MOOD } from '../assets/mood'
 
 const HistoryChart = ({ moodHistory }) => {
   if (!moodHistory) return null

@@ -1,10 +1,18 @@
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faLink, faPowerOff, faUser } from "@fortawesome/free-solid-svg-icons";
+import { library } from '@fortawesome/fontawesome-svg-core'
+import {
+  faFrown,
+  faSmileBeam,
+  faLink,
+  faPowerOff,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons'
 
 function initFontAwesome() {
-  library.add(faLink);
-  library.add(faUser);
-  library.add(faPowerOff);
+  library.add(faFrown)
+  library.add(faSmileBeam)
+  library.add(faLink)
+  library.add(faUser)
+  library.add(faPowerOff)
 }
 
-export default initFontAwesome;
+export default initFontAwesome

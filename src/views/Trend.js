@@ -3,14 +3,9 @@ import { useApi } from '../utils/useApi'
 import Loading from '../components/Loading'
 import TodayChart from '../components/TodayChart'
 import HistoryChart from '../components/HistoryChart'
-import MOOD from '../assets/mood'
+import { defaultMood } from '../assets/mood'
 
 const apiUrl = process.env.REACT_APP_API_URL
-
-const defaultMood = Object.assign(
-  {},
-  ...MOOD.options.map((o) => ({ [o.id]: 0 }))
-)
 
 const Trend = () => {
   const { isLoading, error, data } = useApi({ url: `${apiUrl}/history` })

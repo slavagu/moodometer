@@ -3,24 +3,11 @@ import { Link } from 'react-router-dom'
 import { Jumbotron } from 'reactstrap'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useApi } from '../utils/useApi'
+import Options from '../components/Options'
 import Loading from '../components/Loading'
-import MOOD from '../assets/mood'
+import { MOOD } from '../assets/mood'
 
 const apiUrl = process.env.REACT_APP_API_URL
-
-const Options = ({ onSelect }) => (
-  <div>
-    {MOOD.options.map((o) => (
-      <button
-        key={o.id}
-        className={`btn ${o.button} btn-xl m-2`}
-        onClick={() => onSelect(o.id)}
-      >
-        {o.label}
-      </button>
-    ))}
-  </div>
-)
 
 const Home = () => {
   const { isAuthenticated, loginWithRedirect } = useAuth0()
@@ -74,6 +61,8 @@ const Home = () => {
     <div className="app-content">
       <p>{MOOD.question}</p>
       <Options onSelect={selectMood} />
+      <br />
+      <br />
     </div>
   )
 }

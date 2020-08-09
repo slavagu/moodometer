@@ -28,7 +28,7 @@ const App = () => {
   return (
     <div className="app">
       <NavBar />
-      <Container className="flex-grow-1 mt-5">
+      <Container className="app-main">
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/demo" component={Demo} />
