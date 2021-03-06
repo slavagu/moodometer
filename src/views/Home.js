@@ -12,24 +12,6 @@ const apiUrl = process.env.REACT_APP_API_URL
 const Home = () => {
   const { isAuthenticated, loginWithRedirect } = useAuth0()
 
-  if (!isAuthenticated) {
-    return (
-      <div className="app-content">
-        <Jumbotron className="bg-dark">
-          <h1>Welcome to Mood-o-Meter!</h1>
-          <br />
-          <p>
-            Try the <Link to="/demo">demo</Link> or{' '}
-            <Link to="" onClick={() => loginWithRedirect()}>
-              log in
-            </Link>{' '}
-            to track your mood.
-          </p>
-        </Jumbotron>
-      </div>
-    )
-  }
-
   const [mood, setMood] = useState(null)
 
   const { isLoading, error, refresh } = useApi({
@@ -47,6 +29,24 @@ const Home = () => {
     )
     setMood(userMood)
     refresh()
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="app-content">
+        <Jumbotron className="bg-dark">
+          <h1>Welcome to Mood-o-Meter!</h1>
+          <br />
+          <p>
+            Try the <Link to="/demo">demo</Link> or{' '}
+            <Link to="" onClick={() => loginWithRedirect()}>
+              log in
+            </Link>{' '}
+            to track your mood.
+          </p>
+        </Jumbotron>
+      </div>
+    )
   }
 
   if (isLoading) {

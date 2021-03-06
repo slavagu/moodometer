@@ -6,11 +6,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "aws-sdk": "^2.713.0",
-    "jest": "^26.1.0",
-    "serverless": "^1.77.1",
-    "serverless-dotenv-plugin": "^3.0.0",
-    "serverless-offline": "^6.4.0"
+    "aws-sdk": "^2.854.0",
+    "jest": "^26.6.3",
+    "serverless": "^2.28.0",
+    "serverless-dotenv-plugin": "^3.8.1",
+    "serverless-offline": "^6.8.0"
   },
   "scripts": {
     "start": "serverless offline --httpPort 4000 --noAuth",
@@ -18,6 +18,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "moment-timezone": "^0.5.31"
+    "moment-timezone": "^0.5.33"
   }
 }
