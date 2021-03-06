@@ -52,6 +52,7 @@ export const useApi = ({ url, options = {}, data: requestData = null }) => {
 
   useEffect(() => {
     callApi()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshIndex])
 
   return {
