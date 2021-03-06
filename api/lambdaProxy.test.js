@@ -1,10 +1,5 @@
 const { invokeHandler } = require('./lambdaProxy')
 
-const headers = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Credentials': true,
-}
-
 describe('invokeHandler', () => {
   Date.now = jest.fn(() => new Date('2020-08-01T23:00:00.000Z'))
 
@@ -27,7 +22,6 @@ describe('invokeHandler', () => {
     })
 
     expect(response).toEqual({
-      headers,
       statusCode: 200,
       body: 'true',
     })
@@ -37,7 +31,6 @@ describe('invokeHandler', () => {
     const response = await invokeHandler(event, () => 'ok')
 
     expect(response).toEqual({
-      headers,
       statusCode: 200,
       body: '"ok"',
     })
@@ -49,7 +42,6 @@ describe('invokeHandler', () => {
     })
 
     expect(response).toEqual({
-      headers,
       statusCode: 500,
       body: '"boo"',
     })
